@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DbGears xmlns="http://chameleon.ibs-qa.ru/schema/db">
+    <Query name="Получить количество товаров в списке" statement="SELECT COUNT(*) AS COUNT FROM FOOD WHERE FOOD_NAME = :FOOD_NAME">
+        <Params>
+            <FieldString name="Наименование" locator="FOOD_NAME"/>
+        </Params>
+        <Result>
+            <FieldString name="Количество" locator="COUNT"/>
+        </Result>
+    </Query>
+    <Connection name="H2" driver="org.h2.Driver"
+                url="jdbc:h2:tcp://localhost:9092/mem:testdb;DB_CLOSE_DELAY=-1;user=user;password=pass"
+                autoCommit="true">
+    </Connection>
+    <Query statement="DELETE FROM FOOD WHERE FOOD_ID = (SELECT MAX(FOOD_ID) FROM FOOD WHERE FOOD_NAME = :FOOD_NAME)"
+           name="Удалить последний добавленный товар">
+        <Params>
+            <FieldString name="Наименование" locator="FOOD_NAME"/>
+        </Params>
+    </Query>
+</DbGears>
